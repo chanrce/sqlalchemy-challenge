@@ -1,4 +1,5 @@
 import numpy as np
+import datetime as dt
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -49,18 +50,26 @@ def homepage():
 def precipitation():
     # Create our session (link) from Python to the DB
     session = Session(engine)
+    
+    # Calculate the date 1 year ago from the last data point in the database
+    #Last Date
+    descendingdate=session.query(Measurement).order_by(Measurement.date.desc()).first()
+    descendingdate.__dict__
+    #1 Year from Last Date
+    year_ago=dt.date(2017,8,23)-dt.timedelta(days=365)
+    year_ago
 
     # Query all passengers
     results_prcp = session.query(Measurement.date, Measurement.prcp).\
-        filter(Measurement.date>='2016-08-23').\
+        filter(Measurement.date>=year_ago).\
         order_by(Measurement.date.desc()).all()
 
   # Create a dictionary from the row data and append to a list of all_passengers
     precip_values = []
     for date, prcp in results_prcp:
         prcp_dict = {}
-        prcp_dict["date"] = Measurement.date
-        prcp_dict["tobs"] = Measurement.tobs
+        prcp_dict["date"] = date
+        prcp_dict["prcp"] = prcp
         precip_values.append(prcp_dict)
 
     return jsonify(precip_values)
