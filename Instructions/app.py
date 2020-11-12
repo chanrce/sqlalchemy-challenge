@@ -82,10 +82,10 @@ def precipitation():
 def stations():
     # Create our session (link) from Python to the DB
     session = Session(engine)
-
+    
     "Return a list of all stations"
 
-    # Query all passengers
+    # Query all stations
     station_query = session.query(Station.station, Station.name).all()
 
     session.close()
@@ -132,22 +132,61 @@ def temperature():
     return jsonify(temperature_list)
 
 
+#Start route only
+
+@app.route("/api/v1.0/<start>")
+def start(startdate):
+
+    #Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    #Query start info
+    start_query = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs).\
+           filter(Measurement.date >=startdate)     
+    )
+
+    session.close()
+  
+   # Convert list of tuples into normal list
+    all_start = list(np.ravel(start_query))
+
+    return jsonify(all_start)
+
+# @app.route("/api/v1.0/names")
+# def names():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
+
+#     """Return a list of all passenger names"""
+#     # Query all passengers
+#     results = session.query(Passenger.name).all()
+
+#     session.close()
+
+#     # Convert list of tuples into normal list
+#     all_names = list(np.ravel(results))
+
+#     return jsonify(all_names)
+
+
+
+
+
+#Start and end route
+
+# @app.route("/api/v1.0/<start>/<end>")
+# def startend(startandend):
+
+ #Create our session (link) from Python to the DB
+    #session = Session(engine)
+
+
 
 
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-#######################################
-
-
-
 
 
 
