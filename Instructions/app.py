@@ -11,7 +11,7 @@ from flask import Flask, jsonify
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///hawaii.sqlite")
+engine = create_engine("sqlite:///Resources/hawaii.sqlite")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -50,83 +50,90 @@ def precipitation():
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
-    """Return a list of all passenger names"""
     # Query all passengers
-    results = session.query(Passenger.name).all()
+    results_prcp = session.query(Measurement.date, Measurement.prcp).\
+        filter(Measurement.date>=year_ago).\
+        order_by(Measurement.date.desc()).all()
 
-    session.close()
+  # Create a dictionary from the row data and append to a list of all_passengers
+    precip_values = []
+    for date, prcp in results_prcp:
+        prcp_dict = {}
+        prcp_dict["name"] = name
+        prcp_dict["age"] = age
+        prcp_dict["sex"] = sex
+        precip_values.append(prcp_dict)
 
-    # Convert list of tuples into normal list
-    all_names = list(np.ravel(results))
+    return jsonify(precip_values)
 
-    return jsonify(all_names)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@app.route("/")
-def welcome():
-    """List all available api routes."""
-    return (
-        f"Available Routes:<br/>"
-        f"/api/v1.0/names<br/>"
-        f"/api/v1.0/passengers"
-    )
-
-
-@app.route("/api/v1.0/names")
-def names():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    """Return a list of all passenger names"""
-    # Query all passengers
-    results = session.query(Passenger.name).all()
-
-    session.close()
-
-    # Convert list of tuples into normal list
-    all_names = list(np.ravel(results))
-
-    return jsonify(all_names)
-
-
-@app.route("/api/v1.0/passengers")
-def passengers():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
-
-    """Return a list of passenger data including the name, age, and sex of each passenger"""
-    # Query all passengers
-    results = session.query(Passenger.name, Passenger.age, Passenger.sex).all()
-
-    session.close()
-
-    # Create a dictionary from the row data and append to a list of all_passengers
-    all_passengers = []
-    for name, age, sex in results:
-        passenger_dict = {}
-        passenger_dict["name"] = name
-        passenger_dict["age"] = age
-        passenger_dict["sex"] = sex
-        all_passengers.append(passenger_dict)
-
-    return jsonify(all_passengers)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
+
+
+
+#######################################
+
+
+
+
+
+
+
+
+# @app.route("/")
+# def welcome():
+#     """List all available api routes."""
+#     return (
+#         f"Available Routes:<br/>"
+#         f"/api/v1.0/names<br/>"
+#         f"/api/v1.0/passengers"
+#     )
+
+
+# @app.route("/api/v1.0/names")
+# def names():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
+
+#     """Return a list of all passenger names"""
+#     # Query all passengers
+#     results = session.query(Passenger.name).all()
+
+#     session.close()
+
+#     # Convert list of tuples into normal list
+#     all_names = list(np.ravel(results))
+
+#     return jsonify(all_names)
+
+
+# @app.route("/api/v1.0/passengers")
+# def passengers():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
+
+#     """Return a list of passenger data including the name, age, and sex of each passenger"""
+#     # Query all passengers
+#     results = session.query(Passenger.name, Passenger.age, Passenger.sex).all()
+
+#     session.close()
+
+#     # Create a dictionary from the row data and append to a list of all_passengers
+#     all_passengers = []
+#     for name, age, sex in results:
+#         passenger_dict = {}
+#         passenger_dict["name"] = name
+#         passenger_dict["age"] = age
+#         passenger_dict["sex"] = sex
+#         all_passengers.append(passenger_dict)
+
+#     return jsonify(all_passengers)
+
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
