@@ -135,15 +135,17 @@ def temperature():
 #Start route only
 
 @app.route("/api/v1.0/<start>")
-def start(start):
+def start_only(start):
 
     #Create our session (link) from Python to the DB
     session = Session(engine)
 
+    #Search term conversion to date
+    search_term=dt.datetime.strptime(start, "%Y-%m-%d").date()
+
     #Query start info
-    start_query = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs).\
-           filter(Measurement.date == start)   
-    )
+    start_query = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
+           filter(Measurement.date >= search_term).all()
 
     session.close()
   
