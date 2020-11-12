@@ -63,8 +63,9 @@ def precipitation():
     results_prcp = session.query(Measurement.date, Measurement.prcp).\
         filter(Measurement.date>=year_ago).\
         order_by(Measurement.date.desc()).all()
+   
     session.close()
-    
+
   # Create a dictionary from the row data and append to a list of all_passengers
     precip_values = []
     for date, prcp in results_prcp:
@@ -103,6 +104,16 @@ def temperature():
     # Create our session (link) from Python to the DB
     session = Session(engine)
     
+    # Calculate the date 1 year ago from the last data point in the database
+    #Last Date
+    descendingdate=session.query(Measurement).order_by(Measurement.date.desc()).first()
+    descendingdate.__dict__
+    
+    #1 Year from Last Date
+    year_ago=dt.date(2017,8,23)-dt.timedelta(days=365)
+    year_ago
+
+
     # Query most active station
     most_active = session.query(Measurement.date, Measurement.tobs) .\
                 filter(Measurement.station == 'USC00519281').filter(Measurement.date>=year_ago)
@@ -115,10 +126,13 @@ def temperature():
     for date, tobs in most_active:
         temperature_dict = {}
         temperature_dict["date"] = date
-        temperature_dict["prcp"] = prcp
+        temperature_dict["temp obs"] = tobs
         temperature_list.append(temperature_dict)
 
     return jsonify(temperature_list)
+
+
+
 
 
 
