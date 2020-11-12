@@ -27,10 +27,56 @@ Station = Base.classes.station
 #################################################
 app = Flask(__name__)
 
-
 #################################################
 # Flask Routes
 #################################################
+
+#Home page route
+
+@app.route("/")
+def homepage():
+    return (
+        f"/api/v1.0/precipitation"
+        f"/api/v1.0/stations"
+        f"/api/v1.0/tobs"
+        f"/api/v1.0/<start>"
+        f"/api/v1.0/<start>/<end>"
+    )
+
+#Precipitation route
+
+@app.route("/api/v1.0/precipitation")
+def precipitation():
+    # Create our session (link) from Python to the DB
+    session = Session(engine)
+
+    """Return a list of all passenger names"""
+    # Query all passengers
+    results = session.query(Passenger.name).all()
+
+    session.close()
+
+    # Convert list of tuples into normal list
+    all_names = list(np.ravel(results))
+
+    return jsonify(all_names)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route("/")
 def welcome():
