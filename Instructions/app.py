@@ -36,10 +36,10 @@ app = Flask(__name__)
 @app.route("/")
 def homepage():
     return (
-        f"/api/v1.0/precipitation"
-        f"/api/v1.0/stations"
-        f"/api/v1.0/tobs"
-        f"/api/v1.0/<start>"
+        f"/api/v1.0/precipitation<br/>"
+        f"/api/v1.0/stations<br/>"
+        f"/api/v1.0/tobs<br/>"
+        f"/api/v1.0/<start><br/>"
         f"/api/v1.0/<start>/<end>"
     )
 
@@ -52,16 +52,15 @@ def precipitation():
 
     # Query all passengers
     results_prcp = session.query(Measurement.date, Measurement.prcp).\
-        filter(Measurement.date>=year_ago).\
+        filter(Measurement.date>='2016-08-23').\
         order_by(Measurement.date.desc()).all()
 
   # Create a dictionary from the row data and append to a list of all_passengers
     precip_values = []
     for date, prcp in results_prcp:
         prcp_dict = {}
-        prcp_dict["name"] = name
-        prcp_dict["age"] = age
-        prcp_dict["sex"] = sex
+        prcp_dict["date"] = Measurement.date
+        prcp_dict["tobs"] = Measurement.tobs
         precip_values.append(prcp_dict)
 
     return jsonify(precip_values)
