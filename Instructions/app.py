@@ -134,8 +134,12 @@ def temperature():
 
 #Start route only
 
+
 @app.route("/api/v1.0/<start>")
 def start_only(start):
+
+    #converting to dates
+    start = dt.datetime.strptime(start, "%Y%m%d").date()
 
     #Create our session (link) from Python to the DB
     session = Session(engine)
@@ -163,6 +167,11 @@ def start_only(start):
 
 @app.route("/api/v1.0/<start>/<end>")
 def startend(start, end):
+
+    #converting to dates
+
+    start = dt.datetime.strptime(start, "%Y%m%d").date()
+    end = dt.datetime.strptime(end, "%Y%m%d").date()
 
     #Create our session (link) from Python to the DB
     session = Session(engine)
@@ -193,57 +202,3 @@ if __name__ == '__main__':
 
 
 
-
-
-# @app.route("/")
-# def welcome():
-#     """List all available api routes."""
-#     return (
-#         f"Available Routes:<br/>"
-#         f"/api/v1.0/names<br/>"
-#         f"/api/v1.0/passengers"
-#     )
-
-
-# @app.route("/api/v1.0/names")
-# def names():
-#     # Create our session (link) from Python to the DB
-#     session = Session(engine)
-
-#     """Return a list of all passenger names"""
-#     # Query all passengers
-#     results = session.query(Passenger.name).all()
-
-#     session.close()
-
-#     # Convert list of tuples into normal list
-#     all_names = list(np.ravel(results))
-
-#     return jsonify(all_names)
-
-
-# @app.route("/api/v1.0/passengers")
-# def passengers():
-#     # Create our session (link) from Python to the DB
-#     session = Session(engine)
-
-#     """Return a list of passenger data including the name, age, and sex of each passenger"""
-#     # Query all passengers
-#     results = session.query(Passenger.name, Passenger.age, Passenger.sex).all()
-
-#     session.close()
-
-#     # Create a dictionary from the row data and append to a list of all_passengers
-#     all_passengers = []
-#     for name, age, sex in results:
-#         passenger_dict = {}
-#         passenger_dict["name"] = name
-#         passenger_dict["age"] = age
-#         passenger_dict["sex"] = sex
-#         all_passengers.append(passenger_dict)
-
-#     return jsonify(all_passengers)
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
