@@ -140,37 +140,22 @@ def start_only(start):
     #Create our session (link) from Python to the DB
     session = Session(engine)
 
-    #Search term conversion to date
-    search_term=dt.datetime.strptime(start, "%Y-%m-%d").date()
-
     #Query start info
-    start_query = session.query(func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).\
-           filter(Measurement.date >= search_term).all()
+    start_query = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+           filter(Measurement.date >= start)
 
     session.close()
-  
-   # Convert list of tuples into normal list
-    all_start = list(np.ravel(start_query))
 
-    return jsonify(all_start)
-
-# @app.route("/api/v1.0/names")
-# def names():
-#     # Create our session (link) from Python to the DB
-#     session = Session(engine)
-
-#     """Return a list of all passenger names"""
-#     # Query all passengers
-#     results = session.query(Passenger.name).all()
-
-#     session.close()
-
-#     # Convert list of tuples into normal list
-#     all_names = list(np.ravel(results))
-
-#     return jsonify(all_names)
+    start_t_list = []
+    for min_temp, max_temp, avg_temp in start_query:
+        dict_s = {}
+        dict_s["Min"] = min_temp
+        dict_s["Max"]= max_temp
+        dict_s["Avg"]= avg_temp
+        start_t_list.append(dict_s)
 
 
+    return jsonify(start_t_list)
 
 
 
