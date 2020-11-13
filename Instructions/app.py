@@ -161,12 +161,28 @@ def start_only(start):
 
 #Start and end route
 
-# @app.route("/api/v1.0/<start>/<end>")
-# def startend(startandend):
+@app.route("/api/v1.0/<start>/<end>")
+def startend(start, end):
 
- #Create our session (link) from Python to the DB
-    #session = Session(engine)
+    #Create our session (link) from Python to the DB
+    session = Session(engine)
 
+    #Query start info
+    start_end_query = session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
+           filter(Measurement.date >= start).filter(Measurement.date <= end)
+
+    session.close()
+
+    start_end_list = []
+    for min_temp, max_temp, avg_temp in start_end_query:
+        dict_s_e = {}
+        dict_s_e["Min"] = min_temp
+        dict_s_e["Max"]= max_temp
+        dict_s_e["Avg"]= avg_temp
+        start_end_list.append(dict_s_e)
+
+
+    return jsonify(start_end_list)
 
 
 
