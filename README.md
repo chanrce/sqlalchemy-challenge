@@ -5,15 +5,15 @@
 * First, I analyzed the last 12 months of the dataset using a query retrieving date and precipitation values. Because there was more than one precipitation entry per date, I calculated the average precipitation value for each date.
 * Next, I loaded the query results into a Pandas Dataframe and plotted the data. I also printed the summary statistics for the precipitation data.
 
-![Precipitation Graph](Resources/prcp_data.png)
+![Precipitation Graph](Instructions/Resources/prcp_data.png)
 
-## Technologies
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
+## Station Analysis
+* First, I calculated the total number of stations.
+* Next, I queried all the stations, their observation counts, and ordered them (descending). I found that the most active station was USC00519281, with 2772 observations.
 * Tech 3 - version 3.0
 
 ## Screenshots
-![Precipitation Graph](Resources/Temperature_data.png)
+![Precipitation Graph](Instructions/Resources/Temperature_data.png)
 
 ## Setup
 Describe how to install / setup your local environement / add link to demo version.
