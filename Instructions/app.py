@@ -59,14 +59,14 @@ def precipitation():
     year_ago=dt.date(2017,8,23)-dt.timedelta(days=365)
     year_ago
 
-    # Query all passengers
+    # Query all precipitation values
     results_prcp = session.query(Measurement.date, Measurement.prcp).\
         filter(Measurement.date>=year_ago).\
         order_by(Measurement.date.desc()).all()
    
     session.close()
 
-  # Create a dictionary from the row data and append to a list of all_passengers
+  # Create a dictionary from the row data and append to a list of precipitation data
     precip_values = []
     for date, prcp in results_prcp:
         prcp_dict = {}
@@ -121,7 +121,7 @@ def temperature():
 
     session.close()
 
-  # Create a dictionary from the row data and append to a list of all_passengers
+  # Create a dictionary from the row data and append to a list of temperature data
     temperature_list = []
     for date, tobs in most_active:
         temperature_dict = {}
