@@ -10,33 +10,10 @@
 ## Station Analysis
 * First, I calculated the total number of stations.
 * Next, I queried all the stations, their observation counts, and ordered them (descending). I found that the most active station was USC00519281, with 2772 observations.
-* Tech 3 - version 3.0
+* Then, I created a histogram for the most active station over the course of 12 months 
 
-## Screenshots
 ![Precipitation Graph](Instructions/Resources/Temperature_data.png)
 
-## Setup
-Describe how to install / setup your local environement / add link to demo version.
-
-## Code Examples
-Show examples of usage:
-`put-your-code-here`
-
-## Features
-List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
-
-To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
-
-## Status
-Project is: _in progress_, _finished_, _no longer continue_ and why?
-
-## Inspiration
-Add here credits. Project inspired by..., based on...
-
-## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
+## Climate App
+* I created a Flask API based on the queries developed in Jupyter notebook
+* To run the app, run `python app.py` in your terminal, and then copy and paste the link into your browser to open the app
